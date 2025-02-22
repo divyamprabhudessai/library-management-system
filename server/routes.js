@@ -32,8 +32,8 @@ router.get("/outstanding", async (req, res) => {
       const books = await Issuance.findAll({
         where: { issuance_status: "Issued" },
         include: [
-          { model: Book },  // ✅ Proper model reference
-          { model: Member }  // ✅ Proper model reference
+          { model: Book },  
+          { model: Member }  
         ],
       });
   
@@ -50,11 +50,11 @@ router.get("/top-borrowed", async (req, res) => {
     try {
       const books = await Issuance.findAll({
         attributes: [
-          [sequelize.col("Issuance.book_id"), "book_id"],  // ✅ Specify table explicitly
+          [sequelize.col("Issuance.book_id"), "book_id"],  
           [sequelize.fn("COUNT", sequelize.col("Issuance.book_id")), "borrow_count"],
         ],
-        include: [{ model: Book }], // ✅ Correct relationship
-        group: ["Issuance.book_id", "Book.book_id"], // ✅ Ensure full qualification
+        include: [{ model: Book }],
+        group: ["Issuance.book_id", "Book.book_id"],
         order: [[sequelize.literal("borrow_count"), "DESC"]],
         limit: 10,
       });

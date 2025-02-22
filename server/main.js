@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(Router); 
 
 app.get("/", (req, res) => {
-  res.send("📚 Library Management API is running...");
+  res.send("Library Management API is running...");
 });
 
 // Start Server
