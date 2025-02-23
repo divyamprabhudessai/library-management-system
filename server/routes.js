@@ -4,19 +4,19 @@ const { Op } = require("sequelize");
 
 const router = express.Router();
 
-// 📌 GET all books
+// GET all books
 router.get("/books", async (req, res) => {
   const books = await Book.findAll();
   res.json(books);
 });
 
-// 📌 Add a new book
+// Add a new book
 router.post("/newbook", async (req, res) => {
   const book = await Book.create(req.body);
   res.json(book);
 });
 
-// 📌 Books never borrowed
+// Books never borrowed
 router.get("/never-borrowed", async (req, res) => {
   const books = await Book.findAll({
     where: {
@@ -26,7 +26,7 @@ router.get("/never-borrowed", async (req, res) => {
   res.json(books);
 });
 
-// 📌 Outstanding books
+// Outstanding books
 router.get("/outstanding", async (req, res) => {
     try {
       const books = await Issuance.findAll({
@@ -45,7 +45,7 @@ router.get("/outstanding", async (req, res) => {
   });
   
 
-// 📌 Top 10 most borrowed books
+//Top 10 most borrowed books
 router.get("/top-borrowed", async (req, res) => {
     try {
       const books = await Issuance.findAll({
@@ -66,13 +66,13 @@ router.get("/top-borrowed", async (req, res) => {
     }
   });
 
-// 📌 Members with books pending for return on a given date
+// Members with books pending for return on a given date
 
 
 
 router.get("/pending-returns", async (req, res) => {
   try {
-    // 📌 Fetch all pending returns (books that are still "Issued")
+    // Fetch all pending returns (books that are still "Issued")
     const pendingReturns = await Issuance.findAll({
       where: { issuance_status: "Issued" }, // Only issued books
       include: [
@@ -82,7 +82,7 @@ router.get("/pending-returns", async (req, res) => {
       attributes: ["target_return_date"], // Fetch due date
     });
 
-    // 📌 Format response
+    // Format response
     const formattedResponse = pendingReturns.map((record) => ({
       member: record.Member?.mem_name || "Unknown", // Avoid null errors
       book: record.Book?.book_name || "Unknown",
@@ -96,7 +96,7 @@ router.get("/pending-returns", async (req, res) => {
   }
 });
 
-// 📌 Total number of members
+//Total number of members
 router.get("/total-members", async (req, res) => {
   try {
     const totalMembers = await Member.count();
@@ -107,7 +107,7 @@ router.get("/total-members", async (req, res) => {
   }
 });
 
-// 📌 Total books that have been issued at least once
+// Total books that have been issued at least once
 router.get("/total-issued-books", async (req, res) => {
   try {
     const totalIssuedBooks = await Issuance.count({
@@ -121,7 +121,7 @@ router.get("/total-issued-books", async (req, res) => {
   }
 });
 
-// 📌 Total number of pending returns
+// Total number of pending returns
 router.get("/total-pending-returns", async (req, res) => {
   try {
     const totalPendingReturns = await Issuance.count({
